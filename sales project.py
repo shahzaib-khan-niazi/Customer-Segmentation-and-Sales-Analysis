@@ -1,50 +1,72 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 import seaborn as sns
+import tkinter as tk
+from tkinter import ttk
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 
-# Load the CSV data with zip compression and latin1 encoding
-salespro = pd.read_csv(r"C:\Users\shahz\PycharmProjects\hello\Sample - Superstore.csv (1).zip", compression='zip', encoding='latin1')
+file_path = r"C:\Users\shahz\PycharmProjects\hello\Sample - Superstore.csv (1).zip"
+df = pd.read_csv(file_path, compression='zip', encoding='latin1')
+root = tk.Tk()
+root.title("Superstore Sales Dashboard")
+root.geometry("1000x700")
+notebook = ttk.Notebook(root)
+notebook.pack(fill='both', expand=True)
+style = ttk.Style()
+style.theme_use('clam')
 
-# Print initial data and info
-print(salespro.head())
-print("\n", salespro.info())
-print("\n", salespro.drop_duplicates())
+# TAB 1: CUSTOMER SEGMENT ANALYSIS 
+tab1 = ttk.Frame(notebook)
+notebook.add(tab1, text='Customer Segment Analysis')
+segment_counts = df['Segment'].value_counts().reset_index()
+segment_counts.columns = ['Segment', 'Count']
+fig1, ax1 = plt.subplots(figsize=(5, 4))
+ax1.pie(segment_counts['Count'], labels=segment_counts['Segment'], autopct='%1.1f%%')
+ax1.set_title("Customer Segment Distribution")
+canvas1 = FigureCanvasTkAgg(fig1, master=tab1)
+canvas1.draw()
+canvas1.get_tk_widget().pack(pady=10)
+#  TAB 2: SALES BY SEGMENT 
+tab2 = ttk.Frame(notebook)
+notebook.add(tab2, text='Sales by Segment')
+sales_segment = df.groupby('Segment')['Sales'].sum().reset_index()
+fig2, ax2 = plt.subplots(figsize=(5, 4))
+sns.barplot(data=sales_segment, x='Segment', y='Sales', hue='Segment', ax=ax2, palette='Set2', legend=False)
+ax2.set_title("Total Sales by Customer Segment")
+canvas2 = FigureCanvasTkAgg(fig2, master=tab2)
+canvas2.draw()
+canvas2.get_tk_widget().pack(pady=10)
+# TAB 3: TOP CUSTOMERS 
+tab3 = ttk.Frame(notebook)
+notebook.add(tab3, text='Top Customers')
+customer_sales = df.groupby('Customer Name')['Sales'].sum().reset_index()
+top_customers = customer_sales.sort_values(by='Sales', ascending=False).head(5)
+fig3, ax3 = plt.subplots(figsize=(5, 4))
+sns.barplot(data=top_customers, x='Sales', y='Customer Name', hue='Sales', ax=ax3, palette='coolwarm', legend=False)
+ax3.set_title("Top 5 Customers by Sales")
+canvas3 = FigureCanvasTkAgg(fig3, master=tab3)
+canvas3.draw()
+canvas3.get_tk_widget().pack(pady=10)
+#  TAB 4: SHIP MODE
+tab4 = ttk.Frame(notebook)
+notebook.add(tab4, text='Ship Mode Distribution')
+ship_mode = df['Ship Mode'].value_counts().reset_index()
+ship_mode.columns = ['Ship Mode', 'Count']
+fig4, ax4 = plt.subplots(figsize=(5, 4))
+ax4.pie(ship_mode['Count'], labels=ship_mode['Ship Mode'], autopct='%1.1f%%')
+ax4.set_title("Ship Mode Usage Distribution")
+canvas4 = FigureCanvasTkAgg(fig4, master=tab4)
+canvas4.draw()
+canvas4.get_tk_widget().pack(pady=10)
 
-# Types of customer
-print("\n TYPES OF CUSTOMER ", salespro["Segment"].unique())
-
-# Count the number of customers for each segment
-number_of_customers = salespro["Segment"].value_counts().reset_index()
-number_of_customers.columns = ['Type of Customer', 'Count']  # Rename columns for clarity
-
-# Print the DataFrame to ensure renaming is correct
-print("\n ", number_of_customers)
-
-plt.pie(number_of_customers['Count'], labels=number_of_customers['Type of Customer'], autopct='%1.1f%%')
-# Display the plot
-plt.show()
-sales_per_segment = salespro.groupby('Segment')['Sales'].sum().reset_index()
-sales_per_segment = sales_per_segment.rename(columns={'Segment' : 'Type Of Customer', 'Sales' : 'Total Sales'})
-
-print("\n",sales_per_segment)
-plt.bar(sales_per_segment['Type Of Customer'], sales_per_segment['Total Sales'])
-plt.show()
-plt.pie(sales_per_segment['Total Sales'], labels=sales_per_segment['Type Of Customer'], autopct='%1.1f%%')
-plt.show()
-customers_order_frequency = salespro.groupby(['Customer ID', 'Customer Name', 'Segment'])['Order ID'].count().reset_index()
-customers_order_frequency.rename(columns={'Order ID': 'Total Orders'}, inplace=True)
-repeat_customers = customers_order_frequency[customers_order_frequency['Total Orders'] >= 1]
-repeat_customers_sorted = repeat_customers.sort_values(by='Total Orders', ascending=False)
-print("\n",repeat_customers_sorted.head(12).reset_index(drop=True))
-customer_sales = salespro.groupby(['Customer ID', 'Customer Name', 'Segment'])['Sales'].sum().reset_index()
-top_spenders = customer_sales.sort_values(by='Sales', ascending=False)
-print("\n",top_spenders.head(12).reset_index(drop=True))
-shipping_model = salespro['Ship Mode'].value_counts().reset_index()
-shipping_model = shipping_model.rename(columns={'index':'Use Frequency', 'Ship Mode':'Mode Of Shipment', 'count' : 'Use Frequency'})
-print("\n",shipping_model)
-plt.pie(shipping_model['Use Frequency'], labels=shipping_model['Mode Of Shipment'], autopct='%1.1f%%')
-plt.show()
-state = df['State'].value_counts().reset_index()
-state = state.rename(columns={'index':'State', 'State':'Number Of Customers'})
-print("\n",state.head(20))
+# TAB 5: SALES BY CATEGORY 
+tab5 = ttk.Frame(notebook)
+notebook.add(tab5, text='Sales by Category')
+category_sales = df.groupby('Category')['Sales'].sum().reset_index()
+fig5, ax5 = plt.subplots(figsize=(5, 4))
+sns.barplot(data=category_sales, x='Category', y='Sales', hue='Category', ax=ax5, palette='pastel', legend=False)
+ax5.set_title("Sales by Product Category")
+canvas5 = FigureCanvasTkAgg(fig5, master=tab5)
+canvas5.draw()
+canvas5.get_tk_widget().pack(pady=10)
+root.mainloop()
