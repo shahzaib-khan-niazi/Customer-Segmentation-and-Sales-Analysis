@@ -2,38 +2,48 @@
 Customer-Segmentation-and-Sales-Analysis on Python
 This Python script performs exploratory data analysis (EDA) on a sales dataset (Sample - Superstore.csv). It leverages Pandas for data manipulation, Matplotlib and Seaborn for data visualization, and NumPy for numerical operations.
 
-1)Key Features & Analysis Performed:
-Data Loading & Inspection
-Reads a compressed ZIP CSV file with Latin-1 encoding.
-Displays the first few rows of the dataset (.head()).
-Prints dataset information (.info()).
-Removes duplicate entries.
+1️⃣ Data Loading & Initial Check
+Load Superstore sales data from a ZIP CSV file.
+Check basic info: data types, summary statistics.
+Check for missing values and duplicate rows.
 
-2)Customer Segmentation Analysis:
-Identifies different customer segments (based on the Segment column).
-Counts the number of customers in each segment.
-Visualizes customer distribution using a pie chart.
+2️⃣ Customer & Segment Analysis
+Group by customer name and get their segment (like consumer, corporate, home office).
+Count total unique customers.
+Find top 10 customers with the most orders.
 
-3)Sales Analysis per Customer Segment:
-Groups sales data by customer segment and calculates total sales.
-Creates bar and pie charts to illustrate sales distribution by segment.
+3️⃣ Product Sales Analysis
+Find top 10 best-selling products by total sales.
+Visualize them with a bar chart.
 
-4)Customer Order Frequency Analysis:
-Counts the number of orders placed by each customer.
-Identifies repeat customers and sorts them by total orders.
-Displays the top 12 customers with the highest number of orders.
+4️⃣ State-wise Sales Analysis
+Sum up sales by state.
+Visualize top states with a scatter plot (sales vs state).
 
-5)Top Spending Customers:
-Calculates total sales per customer.
-Sorts customers by highest sales volume.
-Displays the top 12 highest spending customers.
+5️⃣ Shipping Mode Analysis
+Count unique orders by shipping mode (e.g., Same Day, First Class).
+Count total line items by shipping mode.
+Calculate average shipping duration per mode (difference between order date & ship date).
 
-6)Shipping Mode Analysis:
-Counts the usage frequency of each shipping mode.
-Visualizes shipping mode distribution using a pie chart.
+6️⃣ Profit, Discount, Quantity Breakdown
+Sum total profit, discount, and quantity sold.
+Visualize their proportions in a pie chart.
 
-Python Libraries Used:
-pandas — for data processing and aggregation
-matplotlib.pyplot — for data visualization (bar charts, pie charts)
-seaborn — for statistical data visualization
-numpy — for numerical operations
+7️⃣ Profit by Category & Sub-Category
+Group profit by Category and Sub-Category.
+Sort and display so you see which categories are most/least profitable.
+
+8️⃣ Detailed Sales Distribution for Top States
+Pick top 10 states by sales.
+Plot a boxplot to show sales distribution in each top state.
+
+9️⃣ Key Summary Stats
+Calculate mean, median, max, min for sales.
+Calculate total profit, total orders, and average profit per sale.
+Calculate “efficiency” = profit per $1 sale.
+Visualize profit efficiency with a histogram.
+
+🔟 Predictive Modeling (Linear Regression)
+Model 1: Predict profit based on sales (using scikit-learn Linear Regression).
+Model 2: Predict discount based on quantity.
+Visualize the second regression: scatter plot + regression line.
