@@ -1,4 +1,4 @@
-# Customer-Segmentation-and-Sales-Analysis
+# Superstore EDA & Regression 
 Customer-Segmentation-and-Sales-Analysis on Python
 This Python script performs exploratory data analysis (EDA) on a sales dataset (Sample - Superstore.csv). It leverages Pandas for data manipulation, Matplotlib and Seaborn for data visualization, and NumPy for numerical operations.
 
