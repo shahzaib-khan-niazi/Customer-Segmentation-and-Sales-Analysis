@@ -1,5 +1,5 @@
 # Superstore EDA & Regression 
-Superstore EDA & Regressions on Python
+Superstore EDA & Regression on Python
 This Python script performs exploratory data analysis (EDA) on a sales dataset (Sample - Superstore.csv). It leverages Pandas for data manipulation, Matplotlib and Seaborn for data visualization, and NumPy for numerical operations.
 
 1️⃣ Data Loading & Initial Check
